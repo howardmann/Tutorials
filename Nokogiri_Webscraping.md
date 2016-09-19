@@ -1,7 +1,7 @@
 # Nokogiri
 
 ## Overview and Features
-Howie's workflow notes for using the [Nokogiri Ruby gem](http://www.nokogiri.org/) to webscrape a live e-commerce website, [rosefield watches](https://www.rosefieldwatches.com/au/watches.html).
+Howie's workflow notes for using the [Nokogiri Ruby gem](http://www.nokogiri.org/) to webscrape a live e-commerce website: [rosefield watches](https://www.rosefieldwatches.com/au/watches.html).
 
 **Objectives**
   1. Install Nokogiri gems and dependencies
@@ -154,7 +154,8 @@ Render the scraped data into the Pages view template `app/views/pages/index.html
 ```
 
 ##Summary
-Now our feature is complete the following steps will occur each time a user visits our Rails Pages Index view page:
+Now our feature is complete the following steps will occur each time a user visits our Rails Pages Index view page:  
+
 1. The url request will call on the Pages controller Index action
 2. HTTParty will make a get request to the url passed in and convert the HTML string into a Ruby hash
 3. Nokogiri will parse/take the data HTML data from HTTParty and store it in a Nokogiri object
