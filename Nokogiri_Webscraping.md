@@ -158,7 +158,7 @@ Now our feature is complete the following steps will occur each time a user visi
 
 1. The url request will call on the Pages controller Index action
 2. HTTParty will make a get request to the url passed in and convert the HTML string into a Ruby hash
-3. Nokogiri will parse/take the data HTML data from HTTParty and store it in a Nokogiri object
+3. Nokogiri will parse/take the HTML data from HTTParty and store it in a Nokogiri object
 4. Our custom scraping script gets run with the relevant data stored in a new Ruby hash object
 5. Our erb view page then renders the Ruby hash object. We are also able to access the returned JSON parsed data using JavaScript (not covered in this guide, see below)
 6. We use Rails helper to render JSON to the view page if needed (Note: this is not necessary if we are only rendering the view page with Rails html.erb and not rendering JSON with JavaScript, but we should include for completeness and future front-end features)
