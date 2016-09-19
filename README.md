@@ -2,4 +2,5 @@
 Personal workflow notes and guides
 
 ## List of notes included
-- **Rails Shopping Cart**: How to build a simple grocery shopping cart and checkout on Rails
+- **Rails shopping cart**: How to build a simple grocery shopping cart and checkout on Rails
+- **Nokogiri webscraping**: How to use Nokogiri Ruby gem to scrape website information and render on Rails
