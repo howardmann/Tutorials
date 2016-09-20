@@ -35,7 +35,7 @@ Visit the website you are looking to scrape information from in the browser. Use
 In our [comparison website example](http://www.getprice.com.au/men-watches-watches-gpc205t21192mp200np100.htm) we will use jQuery to select the elements which return our watch name, price, image and shop url. Ideally we will be spending the majority of our time in the DOM identifying and keeping track of jQuery selected items vs. writing Nokogiri and Rails script
 
 ```ruby
-# Save jQuery selected objects
+# Make note of the jQuery selected objects as you go along. Note this will not be coded, just for your benefit
 container = $('.results')
 price = $('.results .price_box .price') #  e.g. $199.99
 name = $('.results .name a')  #  e.g. Mens Rip Curl Flyer Ii Lth Watch Blue Cotton
