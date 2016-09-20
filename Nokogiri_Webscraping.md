@@ -1,7 +1,7 @@
 # Nokogiri
 
 ## Overview and Features
-Howie's workflow notes for using the [Nokogiri Ruby gem](http://www.nokogiri.org/) to webscrape a live e-commerce website: [rosefield watches](https://www.rosefieldwatches.com/au/watches.html).
+Howie's workflow notes for using the [Nokogiri Ruby gem](http://www.nokogiri.org/) to webscrape a live [comparison website](http://www.getprice.com.au/men-watches-watches-gpc205t21192mp200np100.htm).
 
 **Objectives**
   1. Install Nokogiri gems and dependencies
@@ -32,13 +32,15 @@ gem 'pry-rails'
 ## 2. Identify with jQuery in DOM
 Visit the website you are looking to scrape information from in the browser. Use inspect element, console and jQuery to identify the relevant DOM nodes which contain the information you need.
 
-In our [watch website example]((https://www.rosefieldwatches.com/au/watches.html) we will use jQuery to select the 'li' elements which return our watch name, price and url. Ideally we will be spending the majority of our time in the DOM identifying and keeping track of jQuery selected items vs. writing Nokogiri and Rails script
+In our [comparison website example](http://www.getprice.com.au/men-watches-watches-gpc205t21192mp200np100.htm) we will use jQuery to select the elements which return our watch name, price, image and shop url. Ideally we will be spending the majority of our time in the DOM identifying and keeping track of jQuery selected items vs. writing Nokogiri and Rails script
 
-```javascript
-$("#category-node-11 .rose-category ul li") // Returns jQuery array of li elements
-$("#category-node-11 .rose-category ul li .rose-category-label") // Returns specifically the div's containing the name text
-$("#category-node-11 .rose-category ul li .price") // Returns specifically the div's containing the price text
-$("#category-node-11 .rose-category ul li .rose-category-watches-img") // Returns specifically the div's containing the image tags
+```ruby
+# Save jQuery selected objects
+container = $('.results')
+price = $('.results .price_box .price') #  e.g. $199.99
+name = $('.results .name a')  #  e.g. Mens Rip Curl Flyer Ii Lth Watch Blue Cotton
+image = $('.results .pic img')  # e.g. image url with src
+brand_logo = $('.results .logo img')  # e.g. surfstitch logo
 ```
 
 ## 3. Write a Nokogiri script
@@ -53,50 +55,39 @@ Using nokogiri and HTTParty create a script to cache the jQuery identified varia
 **WARNING**: The amount and complexity of the Nokogiri script that you write will depend each time on how the HTML class and id names are defined on the website and how much manipulation/ grunt work will be required. It is better to spend the time to view the page in the DOM using jQuery before writing the script.
 
 ```ruby
-#1. HTTParty to fetch and convert url HTML into a Ruby hash and store in variable
-page = HTTParty.get('https://www.rosefieldwatches.com/au/watches.html')
+#1. Visit getprice.com for two url's being female and male watches between $100 and $200
+male_page = HTTParty.get('http://www.getprice.com.au/men-watches-watches-gpc205t21192mp200np100.htm')
+female_page = HTTParty.get('http://www.getprice.com.au/women-watches-watches-gpc205t21191mp200np100.htm')
 
-#2. Parse the variable into a Nokogiri object and save as variable
-parse_page = Nokogiri::HTML(page)
+#2. Transform our HTTP response to a nokogiri object
+parse_male_page = Nokogiri::HTML(male_page)
+parse_female_page = Nokogiri::HTML(female_page)
 
-#3. Create a meaningful Ruby Hash to store the variable. Here we are storing the information in a hash with three primary key value pairs being the key brands which will each hold an array of hashes representing the name, price and image_url of each of the brands watches
-@watches = {:bowery => [], :mercer => [], :gramercy => []}
+#3. Create a meaningful Ruby Hash to store the variable. Here we are storing the information in a hash with two primary key value pairs being the male and female urls which will each hold an array of hashes representing the name, price, image, supplier logo and link to supplier website of each of the watches
+@getprice = {:male => [], :female => []}
 
-#4. Use Nokogiri's css method to select the DOM nodes to loop through and manipulate (similar to jQuery). You will notice that the jQuery selectors are quite different for each node and will depend each time on how the author of the website has written out their classes and ids. Each case will be different, so it is best to rely on jQuery initially to identify where the information lies and how specific it is. Best rely on websites with well defined DOM names. This is not the best example
-parse_page.css("#category-node-8 .rose-category ul li").map do |el|
-  # .text extracts the text from the DOM
-  # gsub(/\s+/,"") Ruby method to remove white space in text returned
-  label = el.css(".rose-category-label").text.gsub(/\s+/,"")
-  price = el.css(".price").text
+#4a. Use Nokogiri's css method to select the DOM nodes to loop through and manipulate (similar to jQuery). You will notice that the jQuery selectors are quite different for each node and will depend each time on how the author of the website has written out their classes and ids. Each case will be different, so it is best to rely on jQuery initially to identify where the information lies and how specific it is. Best rely on websites with well defined DOM names. This is not the best example
+parse_male_page.css(".results .list-item-grid").each do |el|
+  name = el.css('.name a').text
+  price = el.css('.price_box .price').text
+  # This is very important, to get the href link you need to call .attribute('src').to_s
+  image = el.css('.pic img').attribute('src').to_s
+  supplier = el.css('.logo img').attribute('src').to_s
+  gotoshop = el.css('.action .gotoshop a').attribute('href').to_s
 
-  el.css(".slider-swipe [align='center']").map do |el|
-    # ['src'] nokogiri method to extract value of src attribute, which in this case is the url value
-    image = el['src']
-    @watches[:bowery] << {:name => label, :price => price, :image => image}
-  end
+  @getprice[:male] << {:name => name, :price => price, :image => image, :supplier => supplier, :gotoshop => gotoshop}
 end
 
-# Notice: it is quite repetitive and again will depend on how the HTML class and id names are labelled on the page
-parse_page.css("#category-node-11 .rose-category ul li").map do |el|
-  label = el.css(".rose-category-label").text.gsub(/\s+/,"")
-  price = el.css(".price").text
+#4b. We run the same code as above but this time to parse through the female watch page url
+parse_female_page.css(".results .list-item-grid").each do |el|
+  name = el.css('.name a').text
+  price = el.css('.price_box .price').text
+  image = el.css('.pic img').attribute('src').to_s
+  supplier = el.css('.logo img').attribute('src').to_s
+  gotoshop = el.css('.action .gotoshop a').attribute('href').to_s
 
-  el.css(".rose-category-watches-img").map do |el|
-    image = el['src']
-    @watches[:mercer] << {:name => label, :price => price, :image => image}
-  end
+  @getprice[:female] << {:name => name, :price => price, :image => image, :supplier => supplier, :gotoshop => gotoshop}
 end
-
-parse_page.css("#category-node-9 .rose-category ul li").map do |el|
-  label = el.css(".rose-category-label").text.gsub(/\s+/,"")
-  price = el.css(".price").text
-
-  el.css(".rose-category-watches-img").map do |el|
-    image = el['src']
-    @watches[:gramercy] << {:name => label, :price => price, :image => image}
-  end
-end
-
 ```
 
 ##4. Bring back to Rails
@@ -107,7 +98,7 @@ rails g controller Pages index
 rails s
 ```
 
-In the Pages controller and within the index action add the Nokogiri script as written above, then also add the Rails helper at the end to render the Ruby hash array @watches into JSON if needed by our front-end team. This will be helpful for our front-end work if we need to manipulate the JSON data with jQuery
+In the Pages controller and within the index action add the Nokogiri script as written above, then also add the Rails helper at the end to render the Ruby hash array @getprice into JSON if needed by our front-end team. This will be helpful for our front-end work if we need to manipulate the JSON data with jQuery
 
 ```ruby
 class PagesController < ApplicationController
@@ -117,7 +108,7 @@ class PagesController < ApplicationController
 
     # Render data as json when user visits the url.json. Rails view page will still access the Ruby hash
     respond_to do |format|
-      format.json { render :json => @watches}
+      format.json { render :json => @getprice}
       format.html
     end
 
@@ -128,28 +119,25 @@ end
 Render the scraped data into the Pages view template `app/views/pages/index.html.erb`. Note that html.erb file still renders the data as a Ruby hash so we must use Ruby vs. JSON notation.
 
 ```html
-<h1>Nokogiri Webscraping</h1>
+<h1>Web scraping competitor live pricing</h1>
 
-<h3>The Mercer collection</h3>
-<% @watches[:mercer].each do |item| %>
-    <p><%= image_tag(item[:image]) %></p>
-    <p><%= item[:name] %></p>
-    <p><%= item[:price] %></p>
+<h2>Male watches</h2>
+
+<% @getprice[:male].each do |item| %>
+  <p><%= image_tag(item[:image]) %></p>
+  <p><%= item[:name] %></p>
+  <p><%= item[:price] %></p>
+  <p><%= image_tag(item[:supplier]) %></p>
+  <a href="<%= item[:gotoshop] %>" target="_blank">Go to shop</a>
 <% end %>
 
-<h3>The Bowery</h3>
-<% @watches[:bowery].each do |item| %>
-    <p><%= image_tag(item[:image]) %></p>
-    <p><%= item[:name] %></p>
-    <p><%= item[:price] %></p>
-<% end %>
-
-
-<h3>The Gramercy</h3>
-<% @watches[:gramercy].each do |item| %>
-    <p><%= image_tag(item[:image]) %></p>
-    <p><%= item[:name] %></p>
-    <p><%= item[:price] %></p>
+<h2>Female watches</h2>
+<% @getprice[:female].each do |item| %>
+  <p><%= image_tag(item[:image]) %></p>
+  <p><%= item[:name] %></p>
+  <p><%= item[:price] %></p>
+  <p><%= image_tag(item[:supplier]) %></p>
+  <a href="<%= item[:gotoshop] %>" target="_blank">Go to shop</a>
 <% end %>
 ```
 
