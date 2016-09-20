@@ -47,6 +47,7 @@ brand_logo = $('.results .logo img')  # e.g. surfstitch logo
 Using nokogiri and HTTParty create a script to cache the jQuery identified variables in custom Ruby hashes and arrays.
 
 **Summary steps**  
+
 1. Use HTTParty to fetch the HTML content from the url
 2. Parse the HTML into a Nokogiri object
 3. Create a meaningful hash/ array to store the manipulated information
