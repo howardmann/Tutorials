@@ -9,4 +9,4 @@ Howie_Burger's personal notes, guides and tutorials
 - **Rails authentication bcrypt**:
   - How to build Rails user and password authentication from scratch with bcrypt Ruby gem
 - **React views**:
-  - How to build a simple Comment box with live loading with React Components
+  - How to build a simple Comment box with live loading using React Components
