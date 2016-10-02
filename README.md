@@ -1,5 +1,5 @@
 # Know_How_Guides
-Personal workflow notes and guides
+Howie_Burger's personal notes, guides and tutorials
 
 ## List of notes included
 - **Rails shopping cart**: 
@@ -8,3 +8,5 @@ Personal workflow notes and guides
   - How to use Nokogiri Ruby gem to scrape website information and render on Rails
 - **Rails authentication bcrypt**:
   - How to build Rails user and password authentication from scratch with bcrypt Ruby gem
+- **React views**:
+  - How to build a simple Comment box with live loading with React Components
