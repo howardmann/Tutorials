@@ -8,14 +8,7 @@ Howie's workflow notes for building a simple React view app for writing and disp
 - Ajax request for JSON data to render initial comments
 - Comment form for writing new comments. Live preview loading as user types
 - Live posting new comments
-
-**Key steps**
-  1. Install React and setup
-  2. Setup simple HTML and CSS with placeholder output
-  3. Create React Components and render placeholder HTML output from step 2
-  4. Fetch JSON data and make rendering of data dynamic
-  5. Add event listeners and respond by changing state and re-rendering component view
-  6. Add comments with live display. Include validations
+- Deleting posts
 
 ## 1. Installation
 
@@ -160,8 +153,10 @@ class CommentBox extends React.Component {
   _displayComment(){
     return this.state.jsonData.map(function(el){
       return <Comment
+              id = {el.id}
               author= {el.author}
               body= {el.body}
+              removeComment = {this._removeComment.bind(this)}
               key= {el.id}/>
     });
   }
@@ -186,6 +181,15 @@ class CommentBox extends React.Component {
     // });
 
   }
+
+  // Define custom delete comment function. Filter the state jsonData array to return all values other than that selected. Then set this new array as the state. This approach is more performant for React. Then pass this custom method as props to each comment (see above _displayComment) and bind to the lexical scope
+  _removeComment(commentId) {
+    let commentFilter = this.state.jsonData.filter(el=> el.id !== commentId);
+    this.setState({
+      jsonData: commentFilter
+    });
+  }
+
 }
 ```
 
@@ -211,9 +215,15 @@ class Comment extends React.Component {
         <h1>Comment</h1>
         <p>Author: {this.props.author}</p>
         <p>Body: {this.props.body}</p>
+        <button onClick={this._handleDelete.bind(this)}>Delete comment</button>
       </div>
     )
   }
+
+  // Custom handler to call on the removeComment function passed in as props from CommentBox parent
+  _handleDelete(){
+    this.props.removeComment(this.props.id);
+  }  
 }
 ```
 
