@@ -4,6 +4,11 @@
 2. Ranges
 3. Character classes
 4. Quantifiers
+5. Ruby .match method
+6. Ruby .scan method
+7. Ruby ^ and $ validators
+8. Ruby flags
+9. Regex greedy vs reluctant <-- This is a common issue, look at the examples
 
 ## 1. Approximate equality
 Regular expressions are used on strings to search and filter. Syntax for regular expressions is outlined below, where =~ represents approximate equality and / / represents the syntax where regular expressions are written.
@@ -101,3 +106,102 @@ Find a certain character which occurs exactly n times. Syntax use curly brackets
 "hello" =~ /hel{,1}o/ # => l's three times or less
 nil # => no l characters matching once or less
 ```
+
+## 5. Ruby matching regular expressions
+Ruby .match method returns a hash and stores matched regular expressions in number properties. We wrap the matches we want to return in parenthesis which will be accessible in the ruby MatchData hash.
+
+```ruby
+matches = "202-55-1701".match(/(\d+)-(\d+)-(\d+)/) # => #<MatchData "202-55-1701" 1:"202" 2:"55" 3:"1701">
+matches[1] # => "202"
+matches[2] # => "55"
+matches[3] # => "1701"
+```
+
+We can use the symbol syntax to name the matched groups ```(?<name>(regex))```
+
+```ruby
+matches = "202-55-1701".match(/(?<first>\d+)-(?<second>\d+)-(?<banana>\d+)/) # => #<MatchData "202-55-1701" first:"202" second:"55" banana:"1701">
+matches['first'] # => "202"
+matches[:second] # => "55"
+matches['banana'] # => "1701"
+```
+
+## 6. Ruby scan regular expressions
+Ruby .scan method returns an array of matched regex strings.
+
+```ruby
+scanned = "202-55-1701".scan(/\d+/) # => ["202", "55", "1701"]
+scanned[0]  # => '202'
+scanned[1]  # => '55'
+scanned[2]  # => '1701'
+```
+
+## 7. Ruby anchors
+Use ^ symbol before the regex to say nothing else comes before it and $ at the end of the regex to say nothing comes after.
+
+```ruby
+"ruby " =~ /^ruby/ # => 0
+" ruby " =~ /^ruby/ # => nil
+
+" ruby" =~ /ruby$/ # => 1
+" ruby " =~ /ruby$/ # => nil
+
+"ruby" =~ /^ruby$/ # => 1
+```
+
+## 8. Ruby flags
+Use i at end of regex to check based on case insensitive.
+
+```ruby
+"RUBY" =~ /ruby/i # => 0
+"RUBY" =~ /ruby/ # => nil
+```
+
+Use x at end of regex to allow writing of code on new lines for readability of code. Note: Multi-line regex can only be done in Ruby, JavaScript cannot do this.
+
+```ruby
+some_num = "Number: 202-555-1701."
+matchesMulti = some_num.match(/
+  (?<first>\d+)- # This should match 202
+  (?<second>\d+)- # This should match 55
+  (?<banana>\d+)- # This should match 1701
+/x)
+
+matchesSingle = "Number: 202-55-1701.".match(/(?<first>\d+)-(?<second>\d+)-(?<banana>\d+)/)
+```
+
+## 9. Ruby greedy vs reluctant matches
+NOTE: THIS IS IMPORTANT, YOU WILL COME ACROSS THE BUG OFTEN
+
+When we use the .* regex matcher regex will try and match all results. To limit the number of matches we suffix it with a ? to tell regex to match as little as possible. (Note: this is quite complicated, refer to explanation below for more information).
+```ruby
+some_num = "202-555-1701"
+# When just using the .* suffix, causes matching error
+some_num.match(/(\d+).*(\d+).*(\d+)/) # => #<MatchData "202-555-1701" 1:"202" 2:"0" 3:"1">
+
+# When just using the .*? suffix, solves the issue
+some_num.match(/(\d+).*?(\d+).*?(\d+)/) # => #<MatchData "202-555-1701" 1:"202" 2:"555" 3:"1701">
+
+# Another rexample
+html = "<html><div></div></html>"
+# Greedy approach matches everything until the last character of the string is >
+html.match(/<(.*)>/) # => #<MatchData "<html><div></div></html>" 1:"html><div></div></html">
+# Reluctant approach matches the first instance of the closing arrow bracket
+html.match(/<(.*?)>/) # => #<MatchData "<html>" 1:"html">
+```
+
+Summary for ? symbol: This is confusing because the ? symbol has three separate meanings and uses in regex
+1. ```/(?<symbol>/d+)/``` - when used at the beginning of parenthesis it creates a match name variable
+2. ```/(optional)?/``` - when used at the end of a character it means that character is optional
+3. ```/.*?/``` - when used at the end of a quantifier it refers to reluctant matching (see above)
+
+
+### Stackoverflow explanation
+
+A greedy quantifier first matches as much as possible. So the .* matches the entire string. Then the matcher tries to match the f following, but there are no characters left. So it "backtracks", making the greedy quantifier match one less thing (leaving the "o" at the end of the string unmatched). That still doesn't match the f in the regex, so it "backtracks" one more step, making the greedy quantifier match one less thing again (leaving the "oo" at the end of the string unmatched). That still doesn't match the f in the regex, so it backtracks one more step (leaving the "foo" at the end of the string unmatched). Now, the matcher finally matches the f in the regex, and the o and the next o are matched too. Success!
+
+A reluctant or "non-greedy" quantifier first matches as little as possible. So the .* matches nothing at first, leaving the entire string unmatched. Then the matcher tries to match the f following, but the unmatched portion of the string starts with "x" so that doesn't work. So the matcher backtracks, making the non-greedy quantifier match one more thing (now it matches the "x", leaving "fooxxxxxxfoo" unmatched). Then it tries to match the f, which succeeds, and the o and the next o in the regex match too. Success!
+
+In your example, it then starts the process over with the remaining unmatched portion of the string, following the same process.
+
+A possessive quantifier is just like the greedy quantifier, but it doesn't backtrack. So it starts out with .* matching the entire string, leaving nothing unmatched. Then there is nothing left for it to match with the f in the regex. Since the possessive quantifier doesn't backtrack, the match fails there.
