@@ -176,6 +176,18 @@ get '/login' => 'session#new', :as => 'login'
 post '/login' => 'session#create'
 delete '/logout' => 'session#destroy', :as => 'logout'
 ```
+### Create session view login
+In view session new file create a login form. This is not worth memorising but good to understand. Difference is we are using a form_tag helper vs. standard form_for helper as we are not trying to edit or create anything in the model, we are only using to submit the params values to the create method to authenticate with brypt. Remember difference is use form_tag and '/login' url defined in route above, not any instance object.
+
+```html
+<%= form_tag login_path do %>
+  <%= label_tag :email %>
+  <%= email_field_tag :email, 'please enter', required: true %>
+  <%= label_tag :password %>
+  <%= password_field_tag :password %>
+  <%= submit_tag 'Login' %>
+<% end %>
+```
 
 ### Define session controller actions
 In the session controller start by defining three methods:
