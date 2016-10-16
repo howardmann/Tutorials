@@ -198,6 +198,21 @@ Summary for ? symbol: This is confusing because the ? symbol has three separate 
 
 ### Stackoverflow explanation
 
+```
+Enter your regex: .*foo  // greedy quantifier
+Enter input string to search: xfooxxxxxxfoo
+I found the text "xfooxxxxxxfoo" starting at index 0 and ending at index 13.
+
+Enter your regex: .*?foo  // reluctant quantifier
+Enter input string to search: xfooxxxxxxfoo
+I found the text "xfoo" starting at index 0 and ending at index 4.
+I found the text "xxxxxxfoo" starting at index 4 and ending at index 13.
+
+Enter your regex: .*+foo // possessive quantifier
+Enter input string to search: xfooxxxxxxfoo
+No match found.
+```
+
 A greedy quantifier first matches as much as possible. So the .* matches the entire string. Then the matcher tries to match the f following, but there are no characters left. So it "backtracks", making the greedy quantifier match one less thing (leaving the "o" at the end of the string unmatched). That still doesn't match the f in the regex, so it "backtracks" one more step, making the greedy quantifier match one less thing again (leaving the "oo" at the end of the string unmatched). That still doesn't match the f in the regex, so it backtracks one more step (leaving the "foo" at the end of the string unmatched). Now, the matcher finally matches the f in the regex, and the o and the next o are matched too. Success!
 
 A reluctant or "non-greedy" quantifier first matches as little as possible. So the .* matches nothing at first, leaving the entire string unmatched. Then the matcher tries to match the f following, but the unmatched portion of the string starts with "x" so that doesn't work. So the matcher backtracks, making the non-greedy quantifier match one more thing (now it matches the "x", leaving "fooxxxxxxfoo" unmatched). Then it tries to match the f, which succeeds, and the o and the next o in the regex match too. Success!
