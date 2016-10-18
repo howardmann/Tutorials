@@ -16,3 +16,6 @@ Howie_Burger's personal notes, guides and tutorials
 
 - **Regular Expressions**:
   - Commonly used regular expressions and Ruby methods
+
+## Tutorials in progress
+- **Backbone.js**
