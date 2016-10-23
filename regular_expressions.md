@@ -9,6 +9,7 @@
 7. Ruby ^ and $ validators
 8. Ruby flags
 9. Regex greedy vs reluctant <-- This is a common issue, look at the examples
+10. Regex gsub
 
 ## 1. Approximate equality
 Regular expressions are used on strings to search and filter. Syntax for regular expressions is outlined below, where =~ represents approximate equality and / / represents the syntax where regular expressions are written.
@@ -220,3 +221,19 @@ A reluctant or "non-greedy" quantifier first matches as little as possible. So t
 In your example, it then starts the process over with the remaining unmatched portion of the string, following the same process.
 
 A possessive quantifier is just like the greedy quantifier, but it doesn't backtrack. So it starts out with .* matching the entire string, leaving nothing unmatched. Then there is nothing left for it to match with the f in the regex. Since the possessive quantifier doesn't backtrack, the match fails there.
+
+## 9. Ruby gsub
+Find and replace method. Syntax: .gsub(/regex/,'replace')
+
+```ruby
+'RUBY RED'.gsub(/R/,'B') # => 'BUBY RED'
+```
+
+Perform ruby method on any string that matches regex
+
+```ruby
+'RUBY RED'.gsub(/R/) {|letter| letter.downcase} # => 'rUBY rED'
+# Syntatic sugar
+
+'RUBY RED'.gsub(/R/, &:downcase)  # => 'rUBY rED'
+```
