@@ -9,7 +9,7 @@ Introduction to functional programming in JavaScript. This guide covers the foll
 
 ## 1. What is functional programming and why should I care?
 Functional programming is often introduced as a programming style which makes use of some of the following features:
-- **Higher-order functions:** functions take other functions as arguments and/ or return other functions
+- **Higher-order functions:** functions which take other functions as arguments and/ or return other functions
 - **Composability:** functions built from other functions to encourage reusability (includes currying)
 - **Pure functions:** functions which always return the same value when given the same argument
 - **Immutability:** functions which return new values without mutating/ changing the state of the argument passed
