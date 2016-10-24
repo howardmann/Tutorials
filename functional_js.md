@@ -4,8 +4,9 @@
 Introduction to functional programming in JavaScript. This guide covers the following topics:  
 
 1. What is functional programming?  
-2. Applicative programming (map, filter, reduce)  
-3. Recursion  
+2. Higher order functions
+3. Applicative programming (map, filter, reduce)  
+4. Recursion  
 
 ## 1. What is functional programming and why should I care?
 Functional programming is often introduced as a programming style which makes use of some of the following features:
@@ -113,8 +114,37 @@ Key observations in above functional example:
 - We used chaining which works well with immutable functions that return new values. In the mapString example we chained a split map join methods
 - Finally the biggest thing to remember is that with JavaScript we can accept functions as arguments (e.g. capitalize and endY for our mapString function) and we should be encouraged to do so
 
-## 2. Applicative programming
+## 2. Higher-order functions
+Functional programming also makes use of higher-order functions which can take a function as a first parameter and then return another function which await a parameter. In the capitalize name example above we used a higher-order function mapString which accepted another function as an argument. In this example we will write a function which returns another function. Functions which return other functions can be thought of as template functions which allow us to create new custom functions.
+
+Code example should be clearer:
+
+We will write a findAndReplace function which takes two arguments (regex, strReplace) and returns a new function which awaits a text string which will match the previously passed in regex and replace with the strReplace.
+
+```javascript
+// Create a higher-order function findAndReplace which is used as a template return new custom functions
+var findAndReplace = function(regex, strReplace){
+  return function(text){
+    return text.replace(regex, strReplace);
+  };
+};
+
+// Create a custom function passing in a custom regex and word to replace it with
+var correctJS = findAndReplace(/javascript/g, 'JavaScript');
+// correctJS will now be a new function awaiting a text argument which it will then replace with the regex /javascript/g with correct spelling 'JavaScript'
+correctJS('I love javascript and spelling javascript');
+// => 'I love JavaScript and spelling JavaScript'
+
+// We can compose a new function with the findAndReplace higher-order function template
+var correctRails = findAndReplace(/rails/g, 'Ruby on Rails');
+correctRails('I am learning rails');
+// => 'I am learning Ruby on Rails'
+```
+
+Remember that higher-order functions can be thought of as templates/ blueprints to construct other functions. We firstly pass in arguments to create a custom function variable; Then we can call the function by passing in a new argument which will execute against the previously passed in arguments which created the function.
+
+## 3. Applicative programming
 *In progress*
 
-## 3. Recursion
+## 4. Recursion
 *In progress*
