@@ -1,8 +1,8 @@
-# Know_How_Guides
-Howie_Burger's personal notes, guides and tutorials
+# Tutorials
+Howie_Burger's personal tutorials, guides and musings
 
-## List of notes included
-- **Rails shopping cart**: 
+## Ruby and Rails notes
+- **Rails shopping cart**:
   - How to build a simple grocery shopping cart and checkout on Rails
 
 - **Nokogiri webscraping**:
@@ -11,11 +11,15 @@ Howie_Burger's personal notes, guides and tutorials
 - **Rails authentication bcrypt**:
   - How to build Rails user and password authentication from scratch with bcrypt Ruby gem
 
-- **React views**:
-  - How to build a simple Comment box with live loading using React Components
-
 - **Regular Expressions**:
   - Commonly used regular expressions and Ruby methods
+
+## JavaScript notes
+- **Functional JavaScript**:
+  - An introduction to functional programming in JavaScript
+
+- **React views**:
+  - How to build a simple Comment box with live loading using React Components
 
 ## Tutorials in progress
 - **Backbone.js**
