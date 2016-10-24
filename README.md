@@ -2,7 +2,7 @@
 Howie_Burger's personal tutorials, guides and musings
 
 ## Ruby and Rails notes
-- **Rails shopping cart**:
+- [**Rails shopping cart**](rails_shopping_cart.md):
   - How to build a simple grocery shopping cart and checkout on Rails
 
 - **Nokogiri webscraping**:
