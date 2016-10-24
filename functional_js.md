@@ -18,9 +18,9 @@ Functional programming is often introduced as a programming style which makes us
 **BUT!** I find this jargon overwhelming and a difficult way to understand functional programming for a JavaScript newbie like myself...
 
 I find examples helpful and I will attempt to compare a simple function whose purpose is to capitalize a name it is given using three approaches:  
-- **A. Imperative** - what we typically start out doing  
-- **B. Object-oriented** - what we may do as an attempt to organise our code as it scales  
-- **C. Functional** - the approach this article hopes to elucidate
+- **A. Imperative** - logically solving the task in one capitalize function  
+- **B. Object-oriented** - encapsulating the capitalize method in a Person object
+- **C. Functional** - breaking down the solution into multiple smaller and reusable functions
 
 ### A. Imperative
 Imperative approach often follows how we would logically solve the problem. In our example of capitalizing a name we might approach a solution as follows:
