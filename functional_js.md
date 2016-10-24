@@ -15,7 +15,7 @@ Functional programming is often introduced as a programming style which makes us
 - **Immutability:** functions which return new values without mutating/ changing the state of the argument passed
 - **Recursion:** functions that call themselves until they don't
 
-**BUT!** I find this jargon overwhelming and a terrible way understand functional programming as a JavaScript newbie like myself...
+**BUT!** I find this jargon overwhelming and a difficult way to understand functional programming for a JavaScript newbie like myself...
 
 I find examples helpful and I will attempt to compare a simple function whose purpose is to capitalize a name it is given using three approaches:  
 - **A. Imperative** - what we typically start out doing  
