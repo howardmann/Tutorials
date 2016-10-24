@@ -1,10 +1,10 @@
 # Functional JavaScript
 
 ## Overview
-Introduction to functional programming in JavaScript. This guide covers the following topics:
-1. What is functional programming?
-2. Applicative programming (map, filter, reduce)
-3. Recursion
+Introduction to functional programming in JavaScript. This guide covers the following topics:  
+1. What is functional programming?  
+2. Applicative programming (map, filter, reduce)  
+3. Recursion  
 
 ## 1. What is functional programming and why should I care?
 Functional programming is often introduced as a programming style which makes use of some of the following features:
