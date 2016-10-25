@@ -147,4 +147,84 @@ Remember that higher-order functions can be thought of as templates/ blueprints 
 *In progress*
 
 ## 4. Recursion
-*In progress*
+Recursive functions are ones that call themselves from inside the function until a condition is reached and they stop. Recursive functions can be used as an alternative to for loops, and in particular if the bounds are unknown.
+
+Let's start with a simple example of writing a countdown timer in an imperative vs. recursive approach:
+
+```javascript
+// Imperative approach
+var countDown = function(num) {
+  for (var i = num; i > 0; i--){
+    console.log(i);
+  }  
+};
+countDown(10);
+// => 10, 9 ... 1
+
+// Recursive approach
+var countDownRecursive = function(num){
+  if (num === 0) { return; }
+  console.log(num);
+  countDownRecursive(num - 1);
+};
+countDownRecursive(10);
+// => 10, 9 ... 1
+```
+
+A recursive function should include three patterns: 1) a condition for when to stop; 2) take one step; 3) smaller problem for function to solve. Let's compare another example to find the length of an array (I know you can do this normally):
+
+```javascript
+// Define an array
+var arr = [1,2,3,4,5,6];
+
+// Imperative approach
+var countLen = function(arr){
+  var count = 0;
+  var length = arr.length;
+  var i;
+  for (i = 0; i < length; i++){
+    count++;
+  }
+  return count;
+};
+countLen(arr);
+// => 6
+
+// Recursive approach
+var countLenRecursive = function(arr){
+  // 1) condition to stop when length === 0 (I know we are using length here but hey its just an example)
+  if (arr.length === 0) { return 0;}
+  // 2) take one step by adding 1 to previous function return and slicing the array
+  // 3) smaller problem to solve by passing in a smaller array
+  return 1 + countLenRecursive(arr.slice(1));
+};
+countLenRecursive(arr);
+// => 6
+```
+
+Let's do one more example: find the factorial (e.g. factorial of 6 is 6 x 5 x 4 x 3 x 2 x 1). I know maths sucks but lets do it anyway:
+
+```javascript
+// Imperative approach
+var factorial = function(num){
+  var sumProduct = 1;
+  for (var i = 2; i <= num; i++){
+    sumProduct = sumProduct * i;
+  };
+  return sumProduct;
+};
+factorial(6);
+// => 720
+
+// Recursive approach
+var factorialRecursive = function(num){
+  // 1) Stop when: Terminate by returning 1 if number is less than 0;
+  if (num === 0) {return 1;}
+  // 2) Take one-step (num *)
+  // 3) Smaller problem (num -1)
+  return num * factorialRecursive(num -1);
+};
+factorial(6);
+// => 720
+
+```
