@@ -24,10 +24,10 @@ I find examples helpful and I will attempt to compare a simple function whose pu
 - **C. Functional** - breaking down the solution into multiple smaller and reusable functions
 
 ### A. Imperative
-Imperative approach often follows how we would logically solve the problem. In our example of capitalizing a name we might approach a solution as follows:
-1. Split the name string into an array of words
-2. Loop through the array and transform each word by uppercasing the first letter and adding the remaining letters
-3. Join the array of words into a new string and return the string
+Imperative approach often follows how we would logically solve the problem. In our example of capitalizing a name we might approach a solution as follows:  
+1. Split the name string into an array of words  
+2. Loop through the array and transform each word by uppercasing the first letter and adding the remaining letters  
+3. Join the array of words into a new string and return the string  
 
 Let's look at this in code
 ```javascript
