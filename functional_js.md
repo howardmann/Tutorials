@@ -7,7 +7,7 @@ Introduction to functional programming in JavaScript. This guide covers the foll
 2. Higher order functions
 3. Applicative programming (map, filter, reduce)  
 4. Recursion  
-5. Purity
+5. Bonus: creating our own map function
 
 ## 1. What is functional programming and why should I care?
 Functional programming is often introduced as a programming style which makes use of some of the following features:
@@ -351,5 +351,33 @@ var factorialRecursive = function(num){
 factorial(6);
 // => 720
 ```
-## 5. Purity
-*In progress*
+
+## 5. Bonus: Creating our own map function
+As outlined above, JavaScript's map function is heavily used in functional programming styles to iterate through and transform an array (non-destructively). ```map``` is a higher order function in that it accepts another function as an argument. In this example we will show how we can build our own custom ```customMap``` function by creating a new Array prototype method.
+
+In our example we will again iterate through an ```arr = [1,2,3,4,5]``` and double each of the values returning a ```newArr = [2,4,6,8,10]```
+
+```javascript
+var arr = [1,2,3,4,5];
+
+// Defining a simple double function
+var double = function(num){
+  return num * 2;
+};
+
+// Using the map method
+var newArr = arr.map(double); // => [2,4,6,8,10]
+
+// Looking under the hood we can define our own higher-order map method by adding it to the Array prototype. It will accept one function argument and iterate through each of the elements in the array passing in each element into the function and returning a new array value
+Array.prototype.customMap = function(fun){
+  var result = [];
+  for (var i = 0; i < this.length; i++){
+    result.push(fun(this[i]));
+  }
+  return result;
+};
+
+var customArr = arr.customMap(double); // => [2,4,6,8,10]
+
+// That's all folks!
+```
