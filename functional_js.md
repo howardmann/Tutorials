@@ -143,8 +143,128 @@ correctRails('I am learning rails');
 
 Remember that higher-order functions can be thought of as templates/ blueprints to construct other functions. We firstly pass in arguments to create a custom function variable; Then we can call the function by passing in a new argument which will execute against the previously passed in arguments which created the function.
 
-## 3. Applicative programming
-*In progress*
+## 3. Applicative programming: map | reduce| filter
+Applicative programming is used in functional programming by functions calling other functions. Importantly applicative programming returns new values and does not mutate values. This is most commonly represented by the three methods being ```map```, ```reduce``` and ```filter```. All three methods iterate through an array and return a new value based on the function argument passed in. However, each method performs an iteration differently:
+- **map**: iterates through each element in an array and manipulates it returning an array of same length
+- **reduce**: iterates and collapses the elements in an array returning a single value
+- **filter**: iterates through an array and returns the element based on a predicate method passed in
+
+Once again these examples are best explained through examples and comparisons to an imperative approach:
+
+###map###
+Example: double each of the elements in a numbers array [1,2,3,4,5] => [2,4,6,8,10]
+
+```javascript
+var arr = [1,2,3,4,5];
+
+// Imperative approach
+var newArr = [];
+for (var i = 0; i < arr.length; i++){
+  newArr.push(arr[i] * 2);
+}
+console.log(newArr);
+// => [2,4,6,8,10]
+
+// Functional approach using map
+var newArr = arr.map(function(el){
+  return el * 2;
+});
+console.log(newArr);
+// => [2,4,6,8,10]
+
+// ES6 syntax using arrow functions
+var newArr = arr.map(el => el * 2); // => [2,4,6,8,10]
+```
+###reduce###
+Example: sum total each of the elements in a numbers array [1,2,3,4,5] => 15
+
+```javascript
+var arr = [1,2,3,4,5];
+
+// Imperative approach
+var sumTotal = 0;
+for (var i = 0; i < arr.length; i++){
+  sum += arr[i];
+}
+console.log(sumTotal);
+// => 15
+
+// Functional approach using reduce
+var sumTotal = arr.reduce(function(sum,el){
+  return sum += el;
+},0);
+console.log(sumTotal);
+// => 15
+
+// Again some more sugar
+var sumTotal = arr.reduce( (sum,el) => sum+=el ); // => 15
+```
+
+###filter###
+Example: return even numbers in the array [1,2,3,4,5] => [2,4]
+
+```javascript
+var arr = [1,2,3,4,5];
+
+// Imperative approach
+var even = [];
+for (var i = 0; i < arr.length; i++){
+  if (arr[i] % 2 === 0){
+    even.push(arr[i]);
+  }
+}
+console.log(even);
+// => [2,4]
+
+// Functional approach using filter
+var even = arr.filter(function(el){
+  return (el % 2 === 0);
+});
+console.log(even);
+// => [2,4]
+
+// Who doesn't love sugar
+var even = arr.filter(el => el % 2 === 0);  // => [2,4]
+```
+
+###Method chaining###
+Finally the best part of using functional programming is the ability to chain functions (which is encouraged).
+
+Final example: take the array [1,2,3,4,5], double each element, filter for numbers greater than 2 and then calculate sum total. Let's do it imperatively and then functionally.
+
+```javascript
+var arr = [1,2,3,4,5];
+
+// Imperative approach in one go
+var double = [];
+for (var i = 0; i < arr.length; i++){
+  double.push(arr[i] * 2);
+}
+
+var overTwo = [];
+for (var i = 0; i < double.length; i++){
+  if (double[i] > 2){
+    overTwo.push(double[i]);
+  }
+}
+
+var sumTotal = 0;
+for (var i = 0; i < overTwo.length; i++){
+  sumTotal += overTwo[i];
+}
+
+console.log(sumTotal);
+// => 28
+
+// Functional approach chaining map, filter and reduce with sugar of course
+var sumTotal = arr.map(el => el * 2)
+                  .filter(el => el > 2)
+                  .reduce((sum,el) => sum += el);
+
+console.log(sumTotal);
+// => 28
+```
+As we can see while the functional approach may seem like a syntax difference on a standalone basis, when chained with other methods it makes our code easier to reason, debug and reuse our functions. This is the essence of functional programming.
 
 ## 4. Recursion
 Recursive functions are ones that call themselves from inside the function until a condition is reached and they stop. Recursive functions can be used as an alternative to for loops, and in particular if the bounds are unknown.
