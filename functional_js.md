@@ -7,6 +7,7 @@ Introduction to functional programming in JavaScript. This guide covers the foll
 2. Higher order functions
 3. Applicative programming (map, filter, reduce)  
 4. Recursion  
+5. Purity
 
 ## 1. What is functional programming and why should I care?
 Functional programming is often introduced as a programming style which makes use of some of the following features:
@@ -25,11 +26,12 @@ I find examples helpful and I will attempt to compare a simple function whose pu
 
 ### A. Imperative
 Imperative approach often follows how we would logically solve the problem. In our example of capitalizing a name we might approach a solution as follows:  
-1. Split the name string into an array of words  
-2. Loop through the array and transform each word by uppercasing the first letter and adding the remaining letters  
-3. Join the array of words into a new string and return the string  
 
-Let's look at this in code
+1. Split the name string ```'clark jerome kent'``` into an array of words ```['clark', 'jerome', 'kent']```
+2. Loop through the array and transform each word by uppercasing the first letter and adding the remaining letters  ```['Clark', 'Jerome', 'Kent']```
+3. Join the array of words into a new string and return the string  ```'Clark Jerome Kent'```
+
+Let's look at this in code imperatively:
 ```javascript
 var capitalize = function(str){
   var arr = str.split(' ');
@@ -46,11 +48,11 @@ capitalize('clark jerome kent');
 Now while there is nothing wrong with this approach we can point out a few issues which may occur as our codebase scales. Firstly, this function serves a very specific purpose and is not composable, meaning we may find ourselves writing a new function to uppercase the second letter in the string (why? I dunno). Secondly, there could be a risk of naming conflicts if later on we assign a different value to capitalize.
 
 ### B. Object-Oriented
-An object oriented approach may look to encapsulate the capitalize name method in a Person object to prevent naming conflicts. While this example may be a stretch/overkill it illustrates how we can take an object-oriented approach and encapsulate the function.
+An object oriented approach may look to encapsulate the capitalize name method in a Person object to prevent naming conflicts. While this example may be a stretch/ overkill it illustrates how we could take an object-oriented approach to encapsulating the function. For example capitalize method could mean something else in our code for finding the capital city of a country (...or wateva).
 
 We might create a Person object which includes a name property and a method for capitalizing its own name. You may notice that the capitalize method in the Person object is similar to the imperative example above; it is important to note that you shouldn't feel obliged to follow any one style dogmatically. Use what is best for readability and debugging.
 
-More code
+More code, this time object-oriented:
 ```javascript
 var Person = {
   addName: function(name){
@@ -73,7 +75,7 @@ superman.name;
 ```
 
 ### C. Functional
-Finally we can compare an imperative and object-oriented approach to a functional approach. Here we will create two functions, the first capitalizeWord whose job as it suggests will be to capitalize one word and another function mapString who will take two arguments being a function and string to iterate through. The mapString function will then split the string, iterate through and call on the function it was given.
+Finally we can compare the above approaches to a functional approach. Here we will create two functions, the first ```capitalizeWord``` whose job as it suggests will be to capitalize one word and another function ```mapString``` who will take two arguments being a function and string to iterate through. The mapString function will then split the string, iterate through and call on the function it was given.
 
 Let's see this in code
 ```javascript
@@ -109,17 +111,19 @@ mapString('bruce wayne', endY);
 
 Key observations in above functional example:
 - We broke aspects of the solution into smaller solutions. 1) One function was to transform one element; and (2) Another function was to split a string into an array and iterate through passing a function
-- Our functions were composable. The mapString function accepted other function arguments, in this example adding a y to each letter to make brucey wayney
-- Our functions promoted immutability, meaning we did not transform/ destroy any of the arguments but returned a new value
-- We used chaining which works well with immutable functions that return new values. In the mapString example we chained a split map join methods
-- Finally the biggest thing to remember is that with JavaScript we can accept functions as arguments (e.g. capitalize and endY for our mapString function) and we should be encouraged to do so
+- Our functions were composable. The mapString function accepted other function arguments, in this example adding a y to each letter turning ```'bruce wayne'``` to ```'brucey wayney'```
+- Our functions were immutable, meaning we did not transform/ destroy any of the arguments but returned a new value
+- We used chaining which works well with immutable functions that return new values. In the mapString example we chained ```.split``` ```.map``` and ```.join``` methods
+- Finally the biggest thing to remember is that with JavaScript we can accept functions as arguments (e.g. capitalize and endY for our mapString function) and we should be encouraged to do so (which is a perfect segway to our next section on higher-order functions)
 
 ## 2. Higher-order functions
-Functional programming also makes use of higher-order functions which can take a function as a first parameter and then return another function which await a parameter. In the capitalize name example above we used a higher-order function mapString which accepted another function as an argument. In this example we will write a function which returns another function. Functions which return other functions can be thought of as template functions which allow us to create new custom functions.
+Functional programming also makes use of higher-order functions which can take a function as a first parameter and then return another function which awaits a parameter.
+
+In the capitalize name example above we used a higher-order function mapString which accepted another function as an argument. In this example we will write a function which returns another function. Functions which return other functions can be thought of as template functions which allow us to create new custom functions.
 
 Code example should be clearer:
 
-We will write a findAndReplace function which takes two arguments (regex, strReplace) and returns a new function which awaits a text string which will match the previously passed in regex and replace with the strReplace.
+We will write a findAndReplace function which takes two arguments (regex, strReplace) and returns a new function which awaits a text string which will match the previously passed in regex and replace with the strReplace. Confusing I know, just read the code:
 
 ```javascript
 // Create a higher-order function findAndReplace which is used as a template return new custom functions
@@ -346,5 +350,6 @@ var factorialRecursive = function(num){
 };
 factorial(6);
 // => 720
-
 ```
+## 5. Purity
+*In progress*
