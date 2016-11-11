@@ -21,5 +21,9 @@ Howie_Burger's personal tutorials, guides and musings
 - [**React**](react_view.md):
   - How to build a simple Comment box with live loading using React Components
 
+- [**Backbone.js**](backbonejs.md)
+  - How to build a simple Comment box with localstorage using Backbone.js
+
 ## Tutorials in progress
-- **Backbone.js**
+- **Node.js**
+- **Express.js**
