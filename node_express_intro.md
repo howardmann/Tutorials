@@ -4,7 +4,9 @@
 Tutorial to set up node.js and express with handlebars templating views.
 
 ## Background
-Node is a runtime which allows us to write JavaScript on the server side (similar to irb with ruby). Express is a web framework built on top Node which allows for http routing, rendering and communication with a database. Express was inspired by and similar to Sinatra (Ruby) and is a lightweight un-opinionated framework which interacts with many other third party packages.
+Node is a runtime which allows us to write JavaScript on the server side (similar to irb with ruby). The creators basically took the V8 Chrome engine and wrapped it into the terminal.
+
+Express is a web framework built on top Node which allows for http routing, rendering and communication with a database. Express was inspired by and similar to Sinatra (Ruby) and is a lightweight un-opinionated framework which interacts with many other third party packages.
 
 Packages or modules in Node are a collection of reusable code/ libraries/ tools/ frameworks we can use in our Node applications. It is managed by the open source npm registry (node package manager), and is the same as ruby gems.
 
