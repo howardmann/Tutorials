@@ -24,6 +24,11 @@ Howie_Burger's personal tutorials, guides and musings
 - [**Backbone.js**](backbonejs.md)
   - How to build a simple Comment box with localstorage using Backbone.js
 
+## Node.js notes
+- [**Node.js and Express.js**](node_express_intro.md):
+  - Intro to node and setting up a boilerplate express web app with dynamic view templates
+
 ## Tutorials in progress
-- **Node.js**
-- **Express.js**
+- **Node.js: authentication with passport.js**
+- **Node.js: restful CRUD app**
+- **Node.js: database migrations**
