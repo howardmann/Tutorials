@@ -1,5 +1,5 @@
 # Tutorials
-Howie_Burger's personal tutorials, guides and musings
+Hcmusings
 
 ## Ruby and Rails notes
 - [**Rails shopping cart**](Rails_Shopping_Cart.md):

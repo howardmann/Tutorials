@@ -162,6 +162,8 @@ Then render some text into each file. Refer to next section of how we render dyn
 <p>Find me in views/pages/about.hbs</p>
 <p><em>{{someText}}</em></p>
 
+{{global}}
+
 <!-- pages/about.hbs -->
 <h1>Contact page</h1>
 <p>Find me in views/pages/contact.hbs</p>
@@ -175,6 +177,8 @@ Then render some text into each file. Refer to next section of how we render dyn
 {{else}}
   <p>Nothing to see here folks</p>
 {{/if}}
+
+{{global}}
 
 ```
 
@@ -214,4 +218,21 @@ var pagesRoutes = require('./routes/pages');
 app.use('/', index);
 app.use('/users', users);
 app.use(pagesRoutes);
+```
+
+### 4. Global view objects
+We can also pass in global objects which are accessible across all templates without us having to explicitly render them. This becomes very useful later on when we are needing to access session data across views (e.g. in Rails @curren_user). For now we will just pass in a simple string. Follow the express syntax below and store your global objects into res.locals within a custom use middleware function.
+
+This is now accessible in all view templates by calling ```{{global}}```.
+
+```javascript
+// app.js
+
+// ===Custom setting res.locals to objects accessible across all views. Best apply this to our application.layout file. Remember to put after session
+app.use(function (req, res, next) {
+   res.locals = {
+     global: 'Dynamic on all templates'
+   };
+   next();
+});
 ```
