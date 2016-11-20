@@ -16,15 +16,15 @@ After installing node and npm we will also install express generator (provided b
 Then create a directory ```our-first-express-app``` and cd into it and run the following terminal command which will set up our express app using handlebars as the template and sass as our css compiler: ```express --hbs --css sass```. Then follow the prompt and run ```npm install``` to install all node dependencies for the express app.
 
 We will configure our application slightly for convention purposes:  
-1. Create a new file named ```server.js``` in the root directory and copy into it all contents from the file ```bin/www```. Then delete the bin folder  
-2. In ```server.js``` change the app dependency reference to the current directory i.e.: ```var app = require('./app');```  
-3. In our ```package.json``` file (this is similar to our Rails gemfile) under scripts change the start reference to our server file ```"start": "node server",```  
-4. If not already install nodemon globally ```npm i -g nodemon``` (this will auto restart our server whenever we make changes to our code, it is needed in development). Then create a new script called dev and run nodemon server ```"dev": "nodemon server"```, this will run the start script and activate nodemon to monitor changes  
+* Create a new file named ```server.js``` in the root directory and copy into it all contents from the file ```bin/www```. Then delete the bin folder  
+* In ```server.js``` change the app dependency reference to the current directory i.e.: ```var app = require('./app');```  
+* In our ```package.json``` file (this is similar to our Rails gemfile) under scripts change the start reference to our server file ```"start": "node server",```  
+* If not already install nodemon globally ```npm i -g nodemon``` (this will auto restart our server whenever we make changes to our code, it is needed in development). Then create a new script called dev and run nodemon server ```"dev": "nodemon server"```, this will run the start script and activate nodemon to monitor changes  
 
 Next we need to configure our view templating engine. We will uninstall the default hbs dependecy and instead install the npm package express-handlebars. This gives us more functionality namely being able to use layouts which act as a wrapper for other templates (similar to Rails application/layout.html.erb).
-1. Uninstall hbs and remove it from our package.json file ```npm uninstall --save hbs```  
-2. Now instead install express-hbs and add it to our package.json ```npm install express-handlebars```  
-3. In our app.js file we will set our app to require the module and set the view templating engine. Then create a layouts directory in our views folder and move our layout file into this folder  
+* Uninstall hbs and remove it from our package.json file ```npm uninstall --save hbs```  
+* Now instead install express-hbs and add it to our package.json ```npm install express-handlebars```  
+* In our app.js file we will set our app to require the module and set the view templating engine. Then create a layouts directory in our views folder and move our layout file into this folder  
 
 ```javascript
 // app.js
@@ -54,7 +54,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 ```
 
-4. Finally we will make one more adjustment to be able to render scss file and not sass. In our app.js require node-sass-middleware at the top ```var sassMiddleware = require('node-sass-middleware');``` after express and change the reference to the variable and also change some of the options below to be compressed. Then we can rename our .sass file to .scss in our public/stylesheets/style.scss.
+* Finally we will make one more adjustment to be able to render scss file and not sass. In our app.js require node-sass-middleware at the top ```var sassMiddleware = require('node-sass-middleware');``` after express and change the reference to the variable and also change some of the options below to be compressed. Then we can rename our .sass file to .scss in our public/stylesheets/style.scss.
 ```javascript
 // app.js
 
@@ -87,7 +87,7 @@ footer {
 }
 ```
 
-5. Our tree directory structure should look like this:
+* Our tree directory structure should look like this:
 ```
 .
 ├── app.js
@@ -109,7 +109,7 @@ footer {
         └── layout.hbs
 ```
 
-6. Finally start our server by running ```node run dev```
+* Finally start our server by running ```node run dev```
 
 ### 2. View layouts
 Within our layouts let's render a header and footer which will wrap our application and style it for color. Notice the triple handlebar syntax {{{body}}} is the same as <%= yield %> in ruby and allows to render html.
