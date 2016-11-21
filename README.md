@@ -25,10 +25,13 @@ Hcmusings
   - How to build a simple Comment box with localstorage using Backbone.js
 
 ## Node.js notes
-- [**Node.js and Express.js**](node_express_intro.md):
+- [Part 1: **Intro to Node.js and Express.js**](node_express_intro.md):
   - Intro to node and setting up a boilerplate express web app with dynamic view templates
 
+- [Part 2: **Node authentication bcrypt and passport.js**](node_authentication.md):
+  - How to build Node user and password authentication and authorizations with passport.js and bcrypt (Also how to set up a Docker and MySQL database)
+
 ## Tutorials in progress
-- **Node.js: authentication with passport.js**
-- **Node.js: restful CRUD app**
 - **Node.js: database migrations**
+- **Node.js: full CRUD app with MongoDB**
+- **Node.js: ORM models with Bookshelf.js**

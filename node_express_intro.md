@@ -1,4 +1,4 @@
-# Node.js and Express
+# Part 1: Intro to Node.js and Express
 
 ## Introduction
 Tutorial to set up node.js and express with handlebars templating views.
