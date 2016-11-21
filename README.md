@@ -1,7 +1,7 @@
 # Tutorials
 Index summary and links to tutorials and guides written by Howie Mann
 
-## JavaScript notes
+## JavaScript and Frontend Frameworks
 - [**Functional JavaScript**](functional_js.md):
   - An introduction to functional programming in JavaScript
 
@@ -11,15 +11,15 @@ Index summary and links to tutorials and guides written by Howie Mann
 - [**Backbone.js**](backbonejs.md)
   - How to build a simple Comment box with localstorage using Backbone.js
 
-## Node.js notes
-- [Part 1: **Intro to Node.js and Express.js**](node_express_intro.md):
+## Node.js and Backend Frameworks
+- [**Part 1: Intro to Node.js and Express.js**](node_express_intro.md):
   - Intro to node and setting up a boilerplate express web app with dynamic view templates
 
-- [Part 2: **Node authentication bcrypt and passport.js**](node_authentication.md):
+- [**Part 2: Node authentication bcrypt and passport.js**](node_authentication.md):
   - How to build Node user and password authentication and authorizations with passport.js and bcrypt
   - Also includes how to set up a Docker and MySQL database and bonus OAUTH login with github
 
-## Ruby and Rails notes
+## Ruby and Ruby on Rails
 - [**Rails shopping cart**](Rails_Shopping_Cart.md):
   - How to build a simple grocery shopping cart and checkout on Rails
 
