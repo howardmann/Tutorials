@@ -1,5 +1,5 @@
 # Tutorials
-Index and summary of tutorials and guides written by Howie Mann
+Index summary and links to tutorials and guides written by Howie Mann
 
 ## JavaScript notes
 - [**Functional JavaScript**](functional_js.md):
