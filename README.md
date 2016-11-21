@@ -1,18 +1,5 @@
 # Tutorials
-Hcmusings
-
-## Ruby and Rails notes
-- [**Rails shopping cart**](Rails_Shopping_Cart.md):
-  - How to build a simple grocery shopping cart and checkout on Rails
-
-- [**Nokogiri webscraping**](Nokogiri_Webscraping.md):
-  - How to use Nokogiri Ruby gem to scrape website information and render on Rails
-
-- [**Rails authentication bcrypt**](rails_authentication.md):
-  - How to build Rails user and password authentication from scratch with bcrypt Ruby gem
-
-- [**Regular Expressions**](regular_expressions.md):
-  - Commonly used regular expressions and Ruby methods
+Index and summary of tutorials and guides written by Howie Mann
 
 ## JavaScript notes
 - [**Functional JavaScript**](functional_js.md):
@@ -31,6 +18,19 @@ Hcmusings
 - [Part 2: **Node authentication bcrypt and passport.js**](node_authentication.md):
   - How to build Node user and password authentication and authorizations with passport.js and bcrypt
   - Also includes how to set up a Docker and MySQL database and bonus OAUTH login with github
+
+## Ruby and Rails notes
+- [**Rails shopping cart**](Rails_Shopping_Cart.md):
+  - How to build a simple grocery shopping cart and checkout on Rails
+
+- [**Nokogiri webscraping**](Nokogiri_Webscraping.md):
+  - How to use Nokogiri Ruby gem to scrape website information and render on Rails
+
+- [**Rails authentication bcrypt**](rails_authentication.md):
+  - How to build Rails user and password authentication from scratch with bcrypt Ruby gem
+
+- [**Regular Expressions**](regular_expressions.md):
+  - Commonly used regular expressions and Ruby methods
 
 ## Tutorials in progress
 - **Node.js: database migrations**
