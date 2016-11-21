@@ -480,6 +480,119 @@ Finally edit our links slightly with the new user boolean:
 </html>
 ```
 
+## BONUS - OAUTH Github login
+### Summary overview
+We will now add an alternative login approach using github login.
+
+A lot of the code will be copy and paste and the easiest way to find alternative login strategies (i.e. github, facebook, google etc) is to visit passportjs.org. In our case the github link is [here](https://github.com/cfsghost/passport-github).
+
+Most OAUTH login approaches with Node will be as follows:
+* User clicks on github login link and goes to github api website where they can authorize our app to have access
+* Github api sends an authenticated callback url to our app and provides custom JSON data on the user (in our case we will access the github username)
+* Then beforehand we create two new rows in our database storing the oauth provider and the appropriate identified we want to save. In our case => oauth_provider: 'github' and oauth_id: 'howardmann'
+* Back to the callback url: If the username returns matches our oauth_id field then we store that user in the session, otherwise we create a new user in our database and store the oauth_id: 'newgithubaccount'
+
+Note: by using this simple approach we do not save the users email address, name or any passwords. If the user chooses to create a new account with us then we will have duplicate data entries (that is ok for this example app, but going forward we may want to capture the users email and other data as well).
+
+### 1. Install and setup passport configuration
+Refer to the latest passportjs.org website strategy for github. As of the time of writing this tutorial the original passport-github repo was deprecated and replaced with passport-github2, therefore always check.
+
+npm install the library: ```npm i --save passport-github2```.
+
+Next we configure the app. This will be mostly copy and paste from the repo. Then visit the [github oauth api site](https://github.com/settings/applications/new) to register your app and get your oauth tokens (look to save these in ENV variables if in production). Remember that the callbackURL you write here must match what you record in your github api token site.
+
+For the second argument we write a custom ORM script which takes the profile returned (will be a JSON object with details of the user) and then query the database to see if that unique username exists in our database (we saved it as oauth_id). If so then we call done and return the user, otherwise we create a new user with those properties.
+
+```javascript
+// config/passport.js
+var bcrypt = require('bcrypt-nodejs');
+var knex = require('./db.js');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+// Require passport-github2 and save in variable GitHubStrategy
+var GitHubStrategy = require("passport-github2").Strategy
+
+...
+
+// ======OAUTH GITHUB LOGIN STRATEGY REFER passportjs.org=========
+passport.use(new GitHubStrategy({
+  // Copy and paste from passport-github2 github repo. Then go on github and configure clientID and clientSecret by registering an app https://github.com/settings/applications/new
+    clientID: '2e5f40e551b5ed1a1637',
+    clientSecret: '656d1285badbd994a0d7c0b0efef03b0c049c7e3',
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    knex("users")
+      .where("oauth_provider", "github")
+      .where("oauth_id", profile.username)
+      .first()
+      .then((user) => {
+        if (user) {
+          return done(null, user)
+        }
+
+        var newUser = {
+          oauth_provider: "github",
+          oauth_id: profile.username,
+        };
+
+        return knex("users")
+          .insert(newUser)
+          .then((ids) => {
+            newUser.id = ids[0]
+            done(null, newUser)
+          })
+      })
+  }
+));
+```
+
+### 2. Configure routes
+This is again a copy and paste from the repo to call on the passport github method we defined in our passport.js file. The only customisation we can add is the success and failure redirect routes.
+
+```javascript
+// routes/auth.js
+...
+
+router
+  ...
+  .get('/logout', function(req, res, next) {
+    req.logout();
+    req.flash('message', 'Succesfully logged out');
+    res.redirect('/');
+  })
+  .get('/auth/github',passport.authenticate('github', {
+      scope: [ 'user:email' ]
+  }))
+  .get('/auth/github/callback', passport.authenticate('github', {
+    failureRedirect: '/login' }), function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+module.exports = router;
+```
+### 3. Add link
+Finally in our login view page we simply add a new url path to ```/auth/github```
+
+```html
+<!-- views/auth/login.hbs -->
+<form action="/login" method="post">
+  <p>Email:</p>
+  <input type="text" name="username" required="true" autofocus="true">
+
+  <p>Password:</p>
+  <input type="password" name="password" required="true">
+
+  <p><input type="submit" value="Login"></p>
+</form>
+
+<a href="/auth/github">Login with Github</a>
+
+<p>{{message}}</p>
+```
+
+
 ## Summary
 In this tutorial we learnt the following:
 * Setup and integrate a Docker and MySQL database to store our user account details
@@ -487,3 +600,4 @@ In this tutorial we learnt the following:
 * Create a user signup, login and logout system with passport.js
 * Setup authorizations and session view pages
 * Setup conditional view logic based on session data
+* Setup 3rd party OAUTH login with Github as a strategy example

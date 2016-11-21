@@ -29,7 +29,8 @@ Hcmusings
   - Intro to node and setting up a boilerplate express web app with dynamic view templates
 
 - [Part 2: **Node authentication bcrypt and passport.js**](node_authentication.md):
-  - How to build Node user and password authentication and authorizations with passport.js and bcrypt (Also how to set up a Docker and MySQL database)
+  - How to build Node user and password authentication and authorizations with passport.js and bcrypt
+  - Also includes how to set up a Docker and MySQL database and bonus OAUTH login with github
 
 ## Tutorials in progress
 - **Node.js: database migrations**
