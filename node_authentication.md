@@ -52,12 +52,13 @@ CD into our app and then in terminal then we install our relevant packages. Each
 - passport and passport-local: third party library for authentication and authorisations (the bulk of this tutorial will be focused on this)
 - bcrypt-nodejs: Highly secure hashing algorithim which salts and encrypts our passwords. Similar to bcrypt gem in Rails, we do not save plain text passwords in our database
 - connect-flash: node package which helps us flash success and error messages
+- connect-redis: memory database for storing our session keys as hashes
 
 ```
-npm i --save mysql express-session knex passport passport-local bcrypt-nodejs connect-flash
+npm i --save mysql express-session knex passport passport-local bcrypt-nodejs connect-flash connect-redis
 ```
 
-Next require the relevant packages in our app.js file. Note order here matters, particularly express-sessions, passport and flash. Not worth remembering the order.
+Next require the relevant packages in our app.js file. Note order here matters, particularly express-sessions, connect-redis passport and flash. Not worth remembering the order.
 
 ```javascript
 var express = require('express');
@@ -69,6 +70,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 // Require npm packages for authentication
 var session = require("express-session");
+var RedisStore = require('connect-redis')(session)
 var passport = require('passport');
 var flash    = require('connect-flash');
 
@@ -90,15 +92,19 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ======PASSPORT AND SESSIONS MIDDLEWARE========
-app.use(session({secret: "i love dogs", resave: false, saveUnitialized: false}));
+app.use(session({store: new RedisStore(), secret: "i love dogs", resave: false, saveUnitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(session());
-
 ```
+
+Note: if you are having error messages with the sessions i.e. req.flash requires sessions, this may be because the redis server is not running. To run the redis server run the terminal command ```redis -server &``` and then enter the cli ```redis-cli```. To see the key value pairs enter ```key *```.
+
+
 
 ## Setup database and passport
 To set up our database and passport authentication we will create a separate directory called config and add two new files: db.js and passport.js. Then we will also add a new auth.js file in our routes directory where we will include all our user signup, login and logout paths. In addition we will create a separate views directory for our authentication being a signup and login page.
@@ -168,6 +174,8 @@ Then below the two custom strategies/ functions we have two passport functions w
 Remember most of this code is not worth memorising as it won't change match, just know that we are firstly writing two custom functions to create a new user and authenticate a user, and two separate functions to get and set the user id from the session.
 
 ```javascript
+// config/passport.js
+
 var bcrypt = require('bcrypt-nodejs');
 var knex = require('./db.js');
 var passport = require('passport');
@@ -284,6 +292,8 @@ We will also require our config/passport.js file where we wrote our passport str
 For logout it is quite straight forward, we create a get request and then rely on the passport req.logout() method to delete our session and redirect back to the root page
 
 ```javascript
+// routes/auth.js
+
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
@@ -324,6 +334,7 @@ module.exports = router;
 Remember to require our new routes/auth.js file in our app and then app.user it
 
 ```javascript
+// routes/auth.js
 ...
 // Require the routes.js files
 var index = require('./routes/index');
@@ -598,6 +609,6 @@ In this tutorial we learnt the following:
 * Setup and integrate a Docker and MySQL database to store our user account details
 * Communicate with our SQL database using knex.js
 * Create a user signup, login and logout system with passport.js
-* Setup authorizations and session view pages
+* Setup authorizations and session view pages including using Redis for session data store
 * Setup conditional view logic based on session data
 * Setup 3rd party OAUTH login with Github as a strategy example
