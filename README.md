@@ -19,6 +19,10 @@ Index summary and links to tutorials and guides written by Howie Mann
   - How to build Node user and password authentication and authorizations with passport.js and bcrypt
   - Also includes how to set up a Docker and MySQL database and bonus OAUTH login with github
 
+- [**Part 3: Node database migrations with knex**](node_database.md):
+  - Automating our SQL database with migrations and seed files using knex
+
+
 ## Ruby and Ruby on Rails
 - [**Rails shopping cart**](Rails_Shopping_Cart.md):
   - How to build a simple grocery shopping cart and checkout on Rails
@@ -33,6 +37,5 @@ Index summary and links to tutorials and guides written by Howie Mann
   - Commonly used regular expressions and Ruby methods
 
 ## Tutorials in progress
-- **Node.js: database migrations**
 - **Node.js: full CRUD app with MongoDB**
 - **Node.js: ORM models with Bookshelf.js**
