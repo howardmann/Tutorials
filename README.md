@@ -22,6 +22,8 @@ Index summary and links to tutorials and guides written by Howie Mann
 - [**Part 3: Node database migrations with knex**](node_database.md):
   - Automating our SQL database with migrations and seed files using knex
 
+- [**Deployment: Heroku**](node_deploy_heroku.md):
+  - Deploying Node app to Heroku with MySQL database and Redis memory store
 
 ## Ruby and Ruby on Rails
 - [**Rails shopping cart**](Rails_Shopping_Cart.md):
