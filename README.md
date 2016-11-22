@@ -37,5 +37,5 @@ Index summary and links to tutorials and guides written by Howie Mann
   - Commonly used regular expressions and Ruby methods
 
 ## Tutorials in progress
-- **Node.js: full CRUD app with MongoDB**
+- **Node.js: full CRUD app**
 - **Node.js: ORM models with Bookshelf.js**
