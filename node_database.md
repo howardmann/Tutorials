@@ -8,7 +8,11 @@ This tutorial will automate our SQL database migrations to be similar to a Rails
 3. Write our seed files to populate our database (and configure seeding order)
 4. Write a npm script to automate our migration and seed commands (in Rails this would be rake db:migrate and rake db:seed)
 
-Note: this tutorial follows on from Part 2 and assumes you are using SequelPro to set up your initial database and SQL scripts.
+
+* Note:
+  - This tutorial follows on from Part 2 and assumes you are using SequelPro to set up your initial database and SQL scripts.
+  - Refer to the bonus Node heroku deployment tutorial on how to configure a postgresql database 
+
 
 ### 1. Configure knex
 * Firstly install knex globally ```npm i knex -g``` which will allow us to access it via the command line later on.
