@@ -26,7 +26,7 @@ We will configure our application slightly for convention purposes:
 
 Next we need to configure our view templating engine. We will uninstall the default hbs dependecy and instead install the npm package express-handlebars. This gives us more functionality namely being able to use layouts which act as a wrapper for other templates (similar to Rails application/layout.html.erb).
 * Uninstall hbs and remove it from our package.json file ```npm uninstall --save hbs```  
-* Now instead install express-hbs and add it to our package.json ```npm install express-handlebars```  
+* Now instead install express-hbs and add it to our package.json ```npm install --save express-handlebars```  
 * In our app.js file we will set our app to require the module and set the view templating engine. Then create a layouts directory in our views folder and move our layout file into this folder  
 
 ```javascript
