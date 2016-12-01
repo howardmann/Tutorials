@@ -212,7 +212,8 @@ exports.up = function(knex, Promise) {
     table.string('oauth_provider');
     table.string('oauth_id');
     table.boolean('is_admin').defaultTo(false);
-    table.timestamps();
+    table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
+    table.timestamp('updated_at');
   });
 };
 
