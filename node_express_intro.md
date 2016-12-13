@@ -220,6 +220,216 @@ app.use('/users', users);
 app.use(pagesRoutes);
 ```
 
+### 3 BONUS. Routes/ controller organisation
+As our application scales and we have multiple CRUD features and data tables we will want to organise our routes in a RESTful approach. We will adopt a Rails approach to organising our apps as follows:
+- ```routes/index.js```: will be our index of routes mapping the url to the relevant controller action (similar to Rails config/routes)
+- ```routes/[model].js```: create a separate routes file for each of our database models (similar to Rails controllers)
+
+In the example below we will have two models being topics and questions (where questions will belong to a topic). Note: The controller code here represents a Postgresql database using Bookshelf and Knex ORMs (beyond the scope of this tutorial).
+
+In our routes/index.js file:
+```javascript
+// routes/index.js
+var express = require('express');
+var router = express.Router();
+var topics = require('./topics.js');
+var questions = require('./questions.js');
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+// TOPICS
+router
+  .get('/topics', topics.index)
+  .get('/topics/new', topics.new)
+  .post('/topics', topics.create)
+  .get('/topics/:id', topics.show)
+  .get('/topics/:id/edit', topics.edit)
+  .put('/topics/:id', topics.update)
+  .delete('/topics/:id', topics.destroy);
+
+// QUESTIONS
+router
+  .get('/questions', questions.index)
+  .get('/questions/new', questions.new)
+  .get('/questions/:id', questions.show)
+  .post('/questions', questions.create)
+  .put('/questions/:id', questions.update)
+  .delete('/questions/:id', questions.destroy);
+
+
+module.exports = router;
+```
+
+Then going back to our app.js file we will direct the middleware towards our routes index.js file which will then be connected to each of the controllers:
+
+```javascript
+// app.js
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+
+// ===== DELETE THIS BELOW
+// var index = require('./routes/index');
+// var users = require('./routes/users');
+
+//...
+
+// ==== USE THIS AS OUR ROUTES
+// app.use('/', index);
+// app.use('/users', users);
+app.use(require('./routes'));
+
+```
+
+In our routes/topics.js file:
+
+```javascript
+var Topic = require('../models/topic');
+
+exports.index = function(req, res, next) {
+  Topic
+    .fetchAll({withRelated: ['questions']})
+    .then(data => {
+      // res.render('topics/index', {data: data.toJSON()});
+      res.json(data);
+    }, next)
+};
+
+exports.show = function(req, res, next) {
+  Topic
+    .where({id: req.params.id})
+    .fetch({withRelated: ['questions']})
+    .then(data => {
+      res.json(data);
+    }, next)
+};
+
+exports.new = (req, res, next) => {res.render('topics/new') };
+
+exports.create = (req, res, next) => {
+  Topic
+    .forge({name: req.body.name})
+    .save(null, {method: 'insert', require:true})
+    .then(data => {
+      // res.redirect('/topics');
+      res.json(data);
+    }, next)
+};
+
+exports.destroy = (req, res, next) => {
+  Topic
+    .forge({id: req.params.id})
+    .fetch()
+    .then( topic => {
+      topic.destroy({require:true})
+      .then(res.json('success'));
+    }, next)
+};
+
+exports.edit = (req, res, next) => {
+  Topic
+    .where({id: req.params.id})
+    .fetch()
+    .then(data => {
+      res.json(data);
+      res.render('topics/edit', {data: data.toJSON()});
+    }, next)
+};
+
+exports.update = (req, res, next) => {
+  Topic
+    .forge({id: req.params.id})
+    .fetch()
+    .then( data => {
+      data.save({name: req.body.name})
+      .then(res.json('success'));
+    }, next);
+};
+```
+
+In our routes/questions.js file:
+
+```javascript
+var Question = require('../models/question');
+var Topic = require('../models/topic');
+var _ = require('underscore');
+
+exports.index = function(req, res, next) {
+  Question
+    .fetchAll({withRelated: ['topic']})
+    .then(data => {
+      var questions = data.toJSON();
+      var topics = _.uniq(questions.map(el => el.topic.name));
+
+      var dataSort = topics.map(function(el){
+        return {topic: el, questions: questions.filter(question => question.topic.name === el )};
+      });
+      console.log(dataSort);
+      res.render('questions/index', {
+        data: dataSort
+      })
+    }, next)
+};
+
+exports.show = function(req, res, next) {
+  Question
+    .where({id: req.params.id})
+    .fetch({withRelated: ['topic']})
+    .then(data => {
+      res.json(data);
+    }, next)
+};
+
+exports.new = (req, res, next) => {
+  Topic
+    .fetchAll()
+    .then(data => {
+      console.log(data.toJSON());
+      res.render('questions/new', {
+        topics: data.toJSON(),
+        create: true
+      });
+    }, next)
+
+};
+
+exports.create = (req, res, next) => {
+  Question
+    .forge({question: req.body.question, answer: req.body.answer, topic_id: req.body.topic_id})
+    .save(null, {method: 'insert', require:true})
+    .then(data => {
+      res.redirect('/#');
+      // res.json(data);
+    }, next)
+};
+
+exports.destroy = (req, res, next) => {
+  Question
+    .forge({id: req.params.id})
+    .fetch()
+    .then( topic => {
+      topic.destroy({require:true})
+      .then(res.redirect('/#'));
+    }, next)
+};
+
+exports.update = (req, res, next) => {
+  Question
+    .forge({id: req.params.id})
+    .fetch()
+    .then(data => {
+      data.save({question: req.body.question, answer: req.body.answer, topic_id: req.body.topic_id},{method: 'update', patch: true})
+      .then(res.json(data));
+    }, next)
+};
+```
+
 ### 4. Global view objects
 We can also pass in global objects which are accessible across all templates without us having to explicitly render them. This becomes very useful later on when we are needing to access session data across views (e.g. in Rails @curren_user). For now we will just pass in a simple string. Follow the express syntax below and store your global objects into res.locals within a custom use middleware function.
 
