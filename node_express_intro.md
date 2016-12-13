@@ -19,13 +19,14 @@ Then create a directory ```our-first-express-app``` and cd into it and run the f
 
 We will configure our application slightly for convention purposes:  
 * Create a new file named ```server.js``` in the root directory and copy into it all contents from the file ```bin/www```. Then delete the bin folder  
+* Gitignore our node_modules file to save space ```echo 'node_modules' >> .gitignore```
 * In ```server.js``` change the app dependency reference to the current directory i.e.: ```var app = require('./app');```  
 * In our ```package.json``` file (this is similar to our Rails gemfile) under scripts change the start reference to our server file ```"start": "node server",```  
 * If not already install nodemon globally ```npm i -g nodemon``` (this will auto restart our server whenever we make changes to our code, it is needed in development). Then create a new script called dev and run nodemon server ```"dev": "nodemon server"```, this will run the start script and activate nodemon to monitor changes  
 
 Next we need to configure our view templating engine. We will uninstall the default hbs dependecy and instead install the npm package express-handlebars. This gives us more functionality namely being able to use layouts which act as a wrapper for other templates (similar to Rails application/layout.html.erb).
 * Uninstall hbs and remove it from our package.json file ```npm uninstall --save hbs```  
-* Now instead install express-hbs and add it to our package.json ```npm install express-handlebars```  
+* Now instead install express-hbs and add it to our package.json ```npm install --save express-handlebars```  
 * In our app.js file we will set our app to require the module and set the view templating engine. Then create a layouts directory in our views folder and move our layout file into this folder  
 
 ```javascript
