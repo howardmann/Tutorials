@@ -38,6 +38,9 @@ Index summary and links to tutorials and guides written by Howie Mann
 - [**Regular Expressions**](regular_expressions.md):
   - Commonly used regular expressions and Ruby methods
 
+- [**Rails 5 API only**](rails_api.md):
+  - Building an API-only application using Rails 5
+
 ## Tutorials in progress
 - **Node.js: full CRUD app**
 - **Node.js: ORM models with Bookshelf.js**
