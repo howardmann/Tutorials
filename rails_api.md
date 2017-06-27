@@ -199,6 +199,8 @@ rails g controller Directors index show create update destroy
 Delete auto-generated GET routes from controller as required in config/routes.rb file.
 
 Create our controllers. If we wish to sideload association data, then add include: after render json and include the associated model and then the properties we want associated. The serializer will then sideload this data per jsonAPI standard
+
+For ember specific apps we will be serving our create and update payload in the jsonAPI format. As a result we will need our strong params to accept the payload in the format of :data[:attributes]. To enable AMS to be able to parse this we have to add an additional mime type change (see next section below)
 ```ruby
 # app/controllers/movie_controllers.rb
 class MoviesController < ApplicationController
@@ -235,7 +237,7 @@ class MoviesController < ApplicationController
 
   private
     def movie_params
-      params.require(:movie).permit(:title, :year, :box_office, :director_id)
+      params.require(:data).require(:attributes).permit(:title, :year, :box_office, :director_id)
     end
 
 end
@@ -278,11 +280,24 @@ class DirectorsController < ApplicationController
 
   private
     def director_params
-      params.require(:director).permit(:name, :age)
+      params.require(:data).require(:attributes).permit(:name, :age)
     end
 
 end
 
+```
+
+ActiveModelSerializer gem has a workaround required to the mimetype initializer file in the rails gem in order for the strong params to accept the modified params from an Ember jsonapi payload. [Visit stackoverflow link for discussion](https://stackoverflow.com/questions/35733430/jsonapi-strong-params-with-rails-and-ember)
+```ruby
+# config/initializers/mime_types.rb
+api_mime_type = %W(
+  application/vnd.api+json
+  text/x-json
+  application/json
+)
+
+Mime::Type.unregister :json
+Mime::Type.register 'application/json', :json, api_mime_type
 ```
 
 Test API using postman 
