@@ -230,9 +230,8 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
     title = @movie.title
     @movie.destroy
-    render json: {
-      :deleted => title
-    }    
+    # returns HTTP Status Code 204: The server has successfully fulfilled the request and that there is no additional content to send in the response payload body. This is expected as part of jsonapi
+    head :no_content
   end
 
   private
@@ -273,9 +272,7 @@ class DirectorsController < ApplicationController
     @director = Director.find(params[:id])
     title = @director.title
     @director.destroy
-    render json: {
-      :deleted => title
-    }    
+    head :no_content
   end
 
   private
