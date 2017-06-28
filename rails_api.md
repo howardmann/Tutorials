@@ -64,10 +64,13 @@ Update bundle
 ```shell
 $ bundle
 ```
-After that create config/initializers/active_model_serializers.rb file and write following code below. This will specify the jsonApi adapter.
+After that create config/initializers/active_model_serializers.rb file and write following code below. This will specify the jsonApi adapter and also tell the adapter not to convert our underscore properties to hyphens.
 ```ruby
 # config/initializers/active_model_serializers.rb
+# Use jsonAPI format adapter
 ActiveModel::Serializer.config.adapter = :json_api
+# Do not change rails underscore convention for multiple property names e.g. box_office not box-office
+ActiveModel::Serializer.config.key_transform = :unaltered
 ```
 
 ## Database 
