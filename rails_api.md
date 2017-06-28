@@ -239,7 +239,9 @@ class MoviesController < ApplicationController
 
   private
     def movie_params
-      params.require(:data).require(:attributes).permit(:title, :year, :box_office, :director_id)
+      # params.require(:data).require(:attributes).permit(:title, :year, :box_office, :director_id)
+      # Use AMS to deserialize jsonAPI payload into ruby hash
+      ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     end
 
 end
@@ -280,7 +282,9 @@ class DirectorsController < ApplicationController
 
   private
     def director_params
-      params.require(:data).require(:attributes).permit(:name, :age)
+      # params.require(:data).require(:attributes).permit(:name, :age)
+      # Use AMS to deserialize jsonAPI payload into ruby hash
+      ActiveModelSerializers::Deserialization.jsonapi_parse(params)      
     end
 
 end
