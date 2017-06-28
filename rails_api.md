@@ -231,7 +231,6 @@ class MoviesController < ApplicationController
 
   def destroy
     @movie = Movie.find(params[:id])
-    title = @movie.title
     @movie.destroy
     # returns HTTP Status Code 204: The server has successfully fulfilled the request and that there is no additional content to send in the response payload body. This is expected as part of jsonapi
     head :no_content
@@ -275,7 +274,6 @@ class DirectorsController < ApplicationController
 
   def destroy
     @director = Director.find(params[:id])
-    title = @director.title
     @director.destroy
     head :no_content
   end
