@@ -12,6 +12,9 @@ Index summary and links to tutorials and guides written by Howie Mann
   - How to build a simple Comment box with localstorage using Backbone.js
 
 ## Node.js and Backend Frameworks
+- [**Unit testing patterns in JavaScript**](testing_js.md):
+  - Overview of common unit testing patterns when writing JavaScript
+
 - [**Part 1: Intro to Node.js and Express.js**](node_express_intro.md):
   - Intro to node and setting up a boilerplate express web app with dynamic view templates
 
