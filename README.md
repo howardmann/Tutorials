@@ -44,6 +44,6 @@ Index summary and links to tutorials and guides written by Howie Mann
 - [**Rails 5 API only**](rails_api.md):
   - Building an API-only application using Rails 5
 
-## Tutorials in progress
-- **Node.js: full CRUD app**
-- **Node.js: ORM models with Bookshelf.js**
+## SQL
+- [**Raw SQL**](SQL.md):
+  - Common SQL queries, table creations, relations, joins

@@ -37,7 +37,7 @@ util.fetchHello = () => {
 }
 
 /**
- * Fetches
+ * Fetches fake fruit
  * @param  {type} url     {description}
  * @param  {type} request {description}
  * @return {type} {description}
