@@ -47,7 +47,7 @@ Note: remember to set default values in atom Rails migration tables prior to rak
 rails g model Product name:string price:decimal
 rails g model Cart  
 rails g model LineItem quantity:integer product_id:integer cart_id:integer order_id:integer
-rails g model Order name:string email:string address:text
+rails g model Order name:string email:string address:text pay_method:string
 ```
 
 **Database schema reference**  
@@ -143,13 +143,12 @@ Match routes with controller actions outlined above. The tricky routes here are 
 ```ruby  
 root 'products#index'
 
-get 'carts/:id' => "carts#show", as: "cart"
+get 'cart' => "carts#show", as: "cart"
 delete 'carts/:id' => "carts#destroy"
 
 post 'line_items/:id/add' => "line_items#add_quantity", as: "line_item_add"
 post 'line_items/:id/reduce' => "line_items#reduce_quantity", as: "line_item_reduce"
 post 'line_items' => "line_items#create"
-get 'line_items/:id' => "line_items#show", as: "line_item"
 delete 'line_items/:id' => "line_items#destroy"
 
 resources :products
@@ -388,11 +387,6 @@ LineItems includes the most logic as it joins all models together: Product, Cart
     @line_item.save
     redirect_to cart_path(current_cart)
   end
-
-  private
-    def line_item_params
-      params.require(:line_item).permit(:quantity,:product_id, :cart_id)
-    end
   ```
 
   2. **View link**: Add button link to products index page (erb tags). Include reference to the relevant product when linking to LineItem url
@@ -490,7 +484,7 @@ def create
   @order = Order.new(order_params)
   @current_cart.line_items.each do |item|
     @order.line_items << item
-    item.cart_id = nil
+    item.update(cart_id: nil)
   end
   @order.save
   Cart.destroy(session[:cart_id])
