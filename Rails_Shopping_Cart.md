@@ -25,9 +25,9 @@ Build a minimum of four models (excluding User authentication for now):
 
 2. **LineItem**:
   - Join Table which bridges Product and Cart. Needed to add multiple quantities of each product to Cart (see below)
-    - belongs_to :product
-    - belongs_to :cart
-    - belongs_to :order (for checkout see below)  
+    - belongs_to :product, optional: true (so the presence of the associated object won't be validated.)
+    - belongs_to :cart, optional: true
+    - belongs_to :order, optional: true (for checkout see below)  
 
 
 3. **Cart**:
