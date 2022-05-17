@@ -108,6 +108,8 @@ puts "Product5: #{product5.name} price: #{product5.price.round(2)}"
 Cart.destroy_all
 puts "\nTotal cart count: #{Cart.all.count}"
 ```
+After added above code in seed.rb 
+run "_rails db:seed_"
 
 ## Controller setup
 Setup controllers for each model and associated actions and views. Run terminal commands (see next section) before adding methods
